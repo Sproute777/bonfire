@@ -1,25 +1,26 @@
+import 'package:bonfire/base/bonfire_game.dart';
 import 'package:bonfire/base/bonfire_game_interface.dart';
 import 'package:flame/components.dart';
 
 mixin BonfireHasGameRef on Component {
-  BonfireGameInterface? _gameRef;
+  BonfireGame? _gameRef;
 
-  BonfireGameInterface get gameRef {
+  BonfireGame get gameRef {
     if (_gameRef == null) {
       var c = parent;
       while (c != null) {
         if (c is BonfireHasGameRef) {
           _gameRef = c.gameRef;
           return _gameRef!;
-        } else if (c is BonfireGameInterface) {
-          _gameRef = c as BonfireGameInterface;
+        } else if (c is BonfireGame) {
+          _gameRef = c as BonfireGame;
           return _gameRef!;
         } else {
           c = c.parent;
         }
       }
       throw StateError(
-        'Cannot find reference $BonfireGameInterface in the component tree',
+        'Cannot find reference $BonfireGame in the component tree',
       );
     }
     return _gameRef!;
@@ -27,15 +28,15 @@ mixin BonfireHasGameRef on Component {
 
   bool get hasGameRef => _getGameRef() != null;
 
-  BonfireGameInterface? _getGameRef() {
+  BonfireGame? _getGameRef() {
     if (_gameRef == null) {
       var c = parent;
       while (c != null) {
         if (c is BonfireHasGameRef) {
           _gameRef = c.gameRef;
           return _gameRef!;
-        } else if (c is BonfireGameInterface) {
-          _gameRef = c as BonfireGameInterface;
+        } else if (c is BonfireGame) {
+          _gameRef = c as BonfireGame;
           return _gameRef!;
         } else {
           c = c.parent;
@@ -45,7 +46,7 @@ mixin BonfireHasGameRef on Component {
     return _gameRef;
   }
 
-  set gameRef(BonfireGameInterface gameRef) {
+  set gameRef(BonfireGame gameRef) {
     _gameRef = gameRef;
     this
         .children

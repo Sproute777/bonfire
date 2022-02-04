@@ -13,19 +13,19 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 /// Is a customGame where all magic of the Bonfire happen.
-class BonfireGame extends BaseGame
-    with KeyboardEvents
-    implements BonfireGameInterface {
+class BonfireGame extends BaseGame with KeyboardEvents
+// implements BonfireGameInterface
+{
   static const INTERVAL_UPDATE_CACHE = 200;
   static const INTERVAL_UPDATE_ORDER = 253;
   static const INTERVAL_UPDATE_COLLISIONS = 1003;
 
   /// Context used to access all Flutter power in your game.
-  @override
+  // @override
   final BuildContext context;
 
   /// Represents the character controlled by the user in the game. Instances of this class has actions and movements ready to be used and configured.
-  @override
+  // @override
   final Player? player;
 
   /// The way you can draw things like life bars, stamina and settings. In another words, anything that you may add to the interface to the game.
@@ -87,13 +87,13 @@ class BonfireGame extends BaseGame
 
   ValueChanged<BonfireGame>? onReady;
 
-  @override
+  // @override
   LightingInterface? get lighting => _lighting;
 
-  @override
+  // @override
   ColorFilterInterface? get colorFilter => _colorFilterComponent;
 
-  @override
+  // @override
   JoystickController? get joystick => _joystickController;
 
   BonfireGame({
@@ -198,79 +198,79 @@ class BonfireGame extends BaseGame
     super.onMount();
   }
 
-  @override
+  // @override
   Iterable<GameComponent> visibleComponents() => _visibleComponents;
 
-  @override
+  // @override
   Iterable<Enemy> visibleEnemies() {
     return _visibleComponents.where((element) => (element is Enemy)).cast();
   }
 
-  @override
+  // @override
   Iterable<Enemy> livingEnemies() {
     return enemies().where((element) => !element.isDead).cast();
   }
 
-  @override
+  // @override
   Iterable<Enemy> enemies() {
     return children.where((element) => (element is Enemy)).cast();
   }
 
-  @override
+  // @override
   Iterable<GameDecoration> visibleDecorations() {
     return _visibleComponents
         .where((element) => (element is GameDecoration))
         .cast();
   }
 
-  @override
+  // @override
   Iterable<GameDecoration> decorations() {
     return children.where((element) => (element is GameDecoration)).cast();
   }
 
-  @override
+  // @override
   Iterable<Lighting> visibleLighting() => _visibleLights;
 
-  @override
+  // @override
   Iterable<Attackable> attackables() {
     return children.where((element) => (element is Attackable)).cast();
   }
 
-  @override
+  // @override
   Iterable<Attackable> visibleAttackables() {
     return _visibleComponents
         .where((element) => (element is Attackable))
         .cast();
   }
 
-  @override
+  // @override
   Iterable<Sensor> visibleSensors() {
     return _visibleComponents.where((element) {
       return (element is Sensor);
     }).cast();
   }
 
-  @override
+  // @override
   Iterable<ObjectCollision> collisions() {
     return _collisions;
   }
 
-  @override
+  // @override
   Iterable<ObjectCollision> visibleCollisions() {
     return _visibleCollisions;
   }
 
-  @override
+  // @override
   Iterable<T> visibleComponentsByType<T>() {
     return _visibleComponents.whereType<T>();
   }
 
-  @override
+  // @override
   Iterable<T> componentsByType<T>() {
     return children.whereType<T>();
   }
 
-  @override
+  // @override
   ValueGeneratorComponent getValueGenerator(
     Duration duration, {
     double begin = 0.0,
@@ -346,17 +346,17 @@ class BonfireGame extends BaseGame
     _collisions.addAll(map.getCollisions());
   }
 
-  @override
+  // @override
   Vector2 worldToScreen(Vector2 position) {
     return camera.worldToScreen(position);
   }
 
-  @override
+  // @override
   Vector2 screenToWorld(Vector2 position) {
     return camera.screenToWorld(position);
   }
 
-  @override
+  // override@
   bool isVisibleInCamera(GameComponent c) {
     if (!hasLayout) return false;
     if (c.shouldRemove) return false;
@@ -386,7 +386,7 @@ class BonfireGame extends BaseGame
   }
 
   /// Use this method to change default observer of the Joystick events.
-  @override
+  // @override
   void addJoystickObserver(
     GameComponent target, {
     bool cleanObservers = false,

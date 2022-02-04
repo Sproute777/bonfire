@@ -1,5 +1,6 @@
 library bonfire;
 
+export 'package:bonfire/base/flame_bloc.dart';
 export 'package:bonfire/background/background_color_game.dart';
 export 'package:bonfire/background/game_background.dart';
 export 'package:bonfire/base/bonfire_game.dart';

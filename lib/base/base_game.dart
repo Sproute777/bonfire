@@ -4,11 +4,12 @@ import 'package:bonfire/util/mixins/pointer_detector.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/gestures.dart';
+import 'flame_bloc.dart';
 
 /// CustomBaseGame created to use `Listener` to capture touch screen gestures.
 /// Apply zoom in canvas.
 /// Reorder components per time frame.
-abstract class BaseGame extends FlameGame with FPSCounter, PointerDetector {
+abstract class BaseGame extends FlameBlocGame with FPSCounter, PointerDetector {
   BaseGame({Camera? camera}) : super(camera: camera);
 
   /// variable that keeps the highest rendering priority per frame. This is used to determine the order in which to render the `interface`, `lighting` and `joystick`
