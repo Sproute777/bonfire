@@ -1,5 +1,5 @@
 import 'package:bonfire/base/bonfire_game.dart';
-import 'package:bonfire/base/bonfire_game_interface.dart';
+// import 'package:bonfire/base/bonfire_game_interface.dart';
 import 'package:bonfire/collision/collision_area.dart';
 import 'package:bonfire/map/map_assets_manager.dart';
 import 'package:bonfire/map/tile/tile.dart';

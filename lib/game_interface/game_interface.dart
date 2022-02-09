@@ -51,7 +51,7 @@ class GameInterface extends GameComponent {
 
   void _drawFPS(Canvas c) {
     if (gameRef.showFPS == true) {
-      double? fps = (gameRef as BonfireGame).fps(100);
+      double? fps = (gameRef).fps(100);
       getTextConfigFps(fps).render(
         c,
         'FPS: ${fps.toStringAsFixed(2)}',

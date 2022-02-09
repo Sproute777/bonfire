@@ -1,5 +1,5 @@
 import 'package:bonfire/base/bonfire_game.dart';
-import 'package:bonfire/base/bonfire_game_interface.dart';
+// import 'package:bonfire/base/bonfire_game_interface.dart';
 import 'package:flame/components.dart';
 
 mixin BonfireHasGameRef on Component {
@@ -13,7 +13,7 @@ mixin BonfireHasGameRef on Component {
           _gameRef = c.gameRef;
           return _gameRef!;
         } else if (c is BonfireGame) {
-          _gameRef = c as BonfireGame;
+          _gameRef = c;
           return _gameRef!;
         } else {
           c = c.parent;
@@ -36,7 +36,7 @@ mixin BonfireHasGameRef on Component {
           _gameRef = c.gameRef;
           return _gameRef!;
         } else if (c is BonfireGame) {
-          _gameRef = c as BonfireGame;
+          _gameRef = c;
           return _gameRef!;
         } else {
           c = c.parent;
