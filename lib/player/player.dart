@@ -1,4 +1,7 @@
 import 'package:bonfire/bonfire.dart';
+import 'package:bonfire/joystick/joystick_controller.dart';
+
+import '../joystick/joystick_controller.dart';
 
 class Player extends GameComponent
     with
@@ -24,7 +27,7 @@ class Player extends GameComponent
   void joystickAction(JoystickActionEvent event) {}
 
   @override
-  void moveTo(Vector2 position) {
+  void moveTo(Vector2 position, {required JoystickSmartEvent subEvent}) {
     this.moveToPositionAlongThePath(position);
   }
 }

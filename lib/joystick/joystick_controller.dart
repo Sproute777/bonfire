@@ -45,6 +45,7 @@ class JoystickActionEvent {
   });
 }
 
+enum JoystickSmartEvent { moveTo, atackTo }
 mixin JoystickListener {
   JoystickMoveDirectional currentDirectional = JoystickMoveDirectional.IDLE;
   double currentDirectionalAngle = 0;
@@ -55,7 +56,7 @@ mixin JoystickListener {
   }
 
   void joystickAction(JoystickActionEvent event);
-  void moveTo(Vector2 position);
+  void moveTo(Vector2 position, {required JoystickSmartEvent subEvent});
 }
 
 abstract class JoystickController extends GameComponent
@@ -74,8 +75,8 @@ abstract class JoystickController extends GameComponent
     _observers.forEach((o) => o.joystickAction(event));
   }
 
-  void moveTo(Vector2 event) {
-    _observers.forEach((o) => o.moveTo(event));
+  void moveTo(Vector2 event, {required JoystickSmartEvent subEvent}) {
+    _observers.forEach((o) => o.moveTo(event, subEvent: subEvent));
   }
 
   void addObserver(JoystickListener listener) {
