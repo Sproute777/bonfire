@@ -45,7 +45,7 @@ class JoystickActionEvent {
   });
 }
 
-enum JoystickSmartEvent { moveTo, atackTo }
+enum JoystickSmartEvent { moveTo, atackTo, rangeTo }
 mixin JoystickListener {
   JoystickMoveDirectional currentDirectional = JoystickMoveDirectional.IDLE;
   double currentDirectionalAngle = 0;
