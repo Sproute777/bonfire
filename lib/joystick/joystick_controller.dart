@@ -59,8 +59,7 @@ mixin JoystickListener {
   void moveTo(Vector2 position, JoystickSmartEvent subEvent);
 }
 
-abstract class JoystickController extends GameComponent
-    with PointerDetectorHandler {
+class JoystickController extends GameComponent with PointerDetectorHandler {
   List<JoystickListener> _observers = [];
 
   KeyboardConfig keyboardConfig = KeyboardConfig(enable: false);
