@@ -62,6 +62,82 @@ mixin BlocComponent<B extends BlocBase<S>, S> on Component {
     unsubscribe();
   }
 }
+mixin BlocComponent2<B1 extends BlocBase<S1>, S1, B2 extends BlocBase<S2>, S2>
+    on Component {
+  StreamSubscription<S1>? _subscription1;
+  StreamSubscription<S2>? _subscription2;
+
+  S1? _state1;
+  S2? _state2;
+
+  /// The current state of the [Bloc] that this [Component] is listening to.
+  /// Flame keeps a copy of the state on the [Component] so this can be directly
+  /// accessed in both the [update] and the [render] method.
+  S1? get state1 => _state1;
+  S2? get state2 => _state2;
+
+  /// Makes this component subscribe to the Bloc changes.
+  /// Visible only for test purposes.
+  @visibleForTesting
+  void subscribe(FlameBlocGame game) {
+    final _bloc1 = game.read<B1>();
+    final _bloc2 = game.read<B2>();
+    _state1 = _bloc1.state;
+    _state2 = _bloc2.state;
+
+    _subscription1 = _bloc1.stream.listen((newState) {
+      if (_state1 != newState) {
+        final _callNewState = listenWhen1(_state1, newState);
+        _state1 = newState;
+
+        if (_callNewState) {
+          onNewState1(newState);
+        }
+      }
+    });
+
+    _subscription2 = _bloc2.stream.listen((newState) {
+      if (_state2 != newState) {
+        final _callNewState = listenWhen2(_state2, newState);
+        _state2 = newState;
+
+        if (_callNewState) {
+          onNewState2(newState);
+        }
+      }
+    });
+  }
+
+  /// Makes this component stop listening to the [Bloc] changes.
+  /// Visible only for test purposes.
+  @visibleForTesting
+  void unsubscribe() {
+    _subscription1?.cancel();
+    _subscription2?.cancel();
+    _subscription1 = null;
+    _subscription2 = null;
+  }
+
+  /// Override this to make [onNewState] be called only when
+  /// a certain state change happens.
+  ///
+  /// Default implementation returns true.
+  bool listenWhen1(S1? previousState, S1 newState) => true;
+  bool listenWhen2(S2? previousState, S2 newState) => true;
+
+  /// Listener called everytime a new state is emitted to this component.
+  ///
+  /// Default implementation is a no-op.
+  void onNewState1(S1 state) {}
+  void onNewState2(S2 state) {}
+
+  @override
+  @mustCallSuper
+  void onRemove() {
+    super.onRemove();
+    unsubscribe();
+  }
+}
 
 /// {@template flame_bloc_game}
 /// An enhanced [FlameGame] that has the capability to listen
