@@ -152,6 +152,7 @@ class FlameBlocGame extends FlameGame {
   /// Contains a list of all of the [BlocComponent]s with an active
   /// subscription. Only visible for testing.
   final List<BlocComponent> subscriptionQueue = [];
+  final List<BlocComponent2> subscriptionQueue2 = [];
 
   @override
   @mustCallSuper
@@ -194,6 +195,13 @@ class FlameBlocGame extends FlameGame {
         subscriptionQueue.add(c);
       }
     }
+    if (c is BlocComponent2) {
+      if (isAttached) {
+        c.subscribe(this);
+      } else {
+        subscriptionQueue2.add(c);
+      }
+    }
   }
 
   void _runSubscriptionQueue() {
@@ -201,10 +209,17 @@ class FlameBlocGame extends FlameGame {
       final component = subscriptionQueue.removeAt(0);
       component.subscribe(this);
     }
+    while (subscriptionQueue2.isNotEmpty) {
+      final component = subscriptionQueue2.removeAt(0);
+      component.subscribe(this);
+    }
   }
 
   void _unsubscribe() {
     children.whereType<BlocComponent>().forEach((element) {
+      element.unsubscribe();
+    });
+    children.whereType<BlocComponent2>().forEach((element) {
       element.unsubscribe();
     });
   }
