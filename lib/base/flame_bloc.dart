@@ -138,6 +138,101 @@ mixin BlocComponent2<B1 extends BlocBase<S1>, S1, B2 extends BlocBase<S2>, S2>
     unsubscribe();
   }
 }
+mixin BlocComponent3<B1 extends BlocBase<S1>, S1, B2 extends BlocBase<S2>, S2,
+    B3 extends BlocBase<S3>, S3> on Component {
+  StreamSubscription<S1>? _subscription1;
+  StreamSubscription<S2>? _subscription2;
+  StreamSubscription<S3>? _subscription3;
+
+  S1? _state1;
+  S2? _state2;
+  S3? _state3;
+
+  /// The current state of the [Bloc] that this [Component] is listening to.
+  /// Flame keeps a copy of the state on the [Component] so this can be directly
+  /// accessed in both the [update] and the [render] method.
+  S1? get state1 => _state1;
+  S2? get state2 => _state2;
+  S3? get state3 => _state3;
+
+  /// Makes this component subscribe to the Bloc changes.
+  /// Visible only for test purposes.
+  @visibleForTesting
+  void subscribe(FlameBlocGame game) {
+    final _bloc1 = game.read<B1>();
+    final _bloc2 = game.read<B2>();
+    final _bloc3 = game.read<B3>();
+    _state1 = _bloc1.state;
+    _state2 = _bloc2.state;
+    _state3 = _bloc3.state;
+
+    _subscription1 = _bloc1.stream.listen((newState) {
+      if (_state1 != newState) {
+        final _callNewState = listenWhen1(_state1, newState);
+        _state1 = newState;
+
+        if (_callNewState) {
+          onNewState1(newState);
+        }
+      }
+    });
+
+    _subscription2 = _bloc2.stream.listen((newState) {
+      if (_state2 != newState) {
+        final _callNewState = listenWhen2(_state2, newState);
+        _state2 = newState;
+
+        if (_callNewState) {
+          onNewState2(newState);
+        }
+      }
+    });
+    _subscription3 = _bloc3.stream.listen((newState) {
+      if (_state3 != newState) {
+        final _callNewState = listenWhen3(_state3, newState);
+        _state3 = newState;
+
+        if (_callNewState) {
+          onNewState3(newState);
+        }
+      }
+    });
+  }
+
+  /// Makes this component stop listening to the [Bloc] changes.
+  /// Visible only for test purposes.
+  @visibleForTesting
+  void unsubscribe() {
+    _subscription1?.cancel();
+    _subscription2?.cancel();
+    _subscription3?.cancel();
+    _subscription1 = null;
+    _subscription2 = null;
+    _subscription3 = null;
+  }
+
+  /// Override this to make [onNewState] be called only when
+  /// a certain state change happens.
+  ///
+  /// Default implementation returns true.
+  bool listenWhen1(S1? previousState, S1 newState) => true;
+  bool listenWhen2(S2? previousState, S2 newState) => true;
+  bool listenWhen3(S3? previousState, S3 newState) => true;
+
+  /// Listener called everytime a new state is emitted to this component.
+  ///
+  /// Default implementation is a no-op.
+  void onNewState1(S1 state) {}
+  void onNewState2(S2 state) {}
+  void onNewState3(S3 state) {}
+
+  @override
+  @mustCallSuper
+  void onRemove() {
+    super.onRemove();
+    unsubscribe();
+  }
+}
 
 /// {@template flame_bloc_game}
 /// An enhanced [FlameGame] that has the capability to listen
@@ -153,6 +248,7 @@ class FlameBlocGame extends FlameGame {
   /// subscription. Only visible for testing.
   final List<BlocComponent> subscriptionQueue = [];
   final List<BlocComponent2> subscriptionQueue2 = [];
+  final List<BlocComponent3> subscriptionQueue3 = [];
 
   @override
   @mustCallSuper
@@ -202,6 +298,13 @@ class FlameBlocGame extends FlameGame {
         subscriptionQueue2.add(c);
       }
     }
+    if (c is BlocComponent3) {
+      if (isAttached) {
+        c.subscribe(this);
+      } else {
+        subscriptionQueue3.add(c);
+      }
+    }
   }
 
   void _runSubscriptionQueue() {
@@ -213,6 +316,10 @@ class FlameBlocGame extends FlameGame {
       final component = subscriptionQueue2.removeAt(0);
       component.subscribe(this);
     }
+    while (subscriptionQueue3.isNotEmpty) {
+      final component = subscriptionQueue3.removeAt(0);
+      component.subscribe(this);
+    }
   }
 
   void _unsubscribe() {
@@ -220,6 +327,9 @@ class FlameBlocGame extends FlameGame {
       element.unsubscribe();
     });
     children.whereType<BlocComponent2>().forEach((element) {
+      element.unsubscribe();
+    });
+    children.whereType<BlocComponent3>().forEach((element) {
       element.unsubscribe();
     });
   }
