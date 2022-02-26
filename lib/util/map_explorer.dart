@@ -49,5 +49,5 @@ class MapExplorer with JoystickListener {
   }
 
   @override
-  void moveTo(Vector2 position, JoystickSmartEvent subEvent) {}
+  void moveTo(Vector2 position, JoystickSmartEvent subEvent, int? targetId) {}
 }

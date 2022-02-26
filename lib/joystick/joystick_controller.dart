@@ -56,7 +56,7 @@ mixin JoystickListener {
   }
 
   void joystickAction(JoystickActionEvent event);
-  void moveTo(Vector2 position, JoystickSmartEvent subEvent);
+  void moveTo(Vector2 position, JoystickSmartEvent subEvent, int? targetId);
 }
 
 class JoystickController extends GameComponent with PointerDetectorHandler {
@@ -74,8 +74,8 @@ class JoystickController extends GameComponent with PointerDetectorHandler {
     _observers.forEach((o) => o.joystickAction(event));
   }
 
-  void moveTo(Vector2 event, JoystickSmartEvent subEvent) {
-    _observers.forEach((o) => o.moveTo(event, subEvent));
+  void moveTo(Vector2 event, JoystickSmartEvent subEvent, int? targetId) {
+    _observers.forEach((o) => o.moveTo(event, subEvent, targetId));
   }
 
   void addObserver(JoystickListener listener) {
