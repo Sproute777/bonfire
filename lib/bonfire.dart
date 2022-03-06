@@ -1,5 +1,11 @@
 library bonfire;
 
+export 'package:bonfire/state_manager/injector.dart';
+export 'package:bonfire/state_manager/state_controller.dart';
+export 'package:bonfire/state_manager/state_controller_consumer.dart';
+export 'package:bonfire/state_manager/state_manager.dart';
+export 'package:bonfire/state_manager/use_state_controller.dart';
+
 export 'package:bonfire/base/flame_bloc.dart';
 export 'package:bonfire/background/background_color_game.dart';
 export 'package:bonfire/background/game_background.dart';
